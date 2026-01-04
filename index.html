@@ -7,32 +7,54 @@
     
     <!-- PWA 相關設定：讓加到主畫面時像原生 App -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- 修正：將 black-translucent 改為 default，避免內容被狀態列遮住 -->
+    <!-- 設定狀態列為預設 (通常為白底黑字)，避免透明遮擋 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#ffffff">
     <link rel="apple-touch-icon" href="https://example.com/icon.png"> <!-- 可替換為您的圖示 URL -->
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
+            /* 使用 dvh (Dynamic Viewport Height) 解決 iOS 網址列伸縮造成的計算誤差 */
+            height: 100dvh; 
             overflow: hidden; /* 防止外層捲動 */
             background-color: #F8FAFC;
-            /* 修正：增加安全區域設定，適配 iPhone 瀏海屏 */
-            padding-top: env(safe-area-inset-top);
-            box-sizing: border-box;
+            
+            /* 使用 Flexbox 讓墊片與 iframe 垂直排列 */
+            display: flex;
+            flex-direction: column;
         }
+
+        /* 建立一個實體墊片，專門佔據 iOS 瀏海/狀態列的高度 
+           這樣 iframe 就會被強制推到安全區域下方
+        */
+        .safe-area-top {
+            width: 100%;
+            /* 讀取 iOS 環境變數，自動取得頂部安全距離 */
+            height: env(safe-area-inset-top);
+            /* 設定為白色，與您的 App 頂部導覽列顏色融合 */
+            background-color: #ffffff; 
+            flex-shrink: 0; /* 防止被壓縮 */
+            z-index: 100;
+        }
+
         iframe {
             width: 100%;
-            height: 100%;
+            flex: 1; /* 自動填滿剩下的所有空間 */
             border: none;
             display: block;
         }
     </style>
 </head>
 <body>
+    <!-- 頂部安全區域墊片 -->
+    <div class="safe-area-top"></div>
+    
     <!-- 將 src 替換為您的 Google Apps Script 部署網址 -->
     <iframe src="https://script.google.com/macros/s/AKfycbzZE7wNr-8xzM25i9Lg8knPPpq6kcG6zuA-paUMx9A4f7L6lamCuWrfKuKN1m_Z_XC8/exec"></iframe>
 </body>
