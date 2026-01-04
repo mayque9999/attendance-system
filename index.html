@@ -7,7 +7,8 @@
     
     <!-- PWA 相關設定：讓加到主畫面時像原生 App -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- 修正：將 black-translucent 改為 default，避免內容被狀態列遮住 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#ffffff">
     <link rel="apple-touch-icon" href="https://example.com/icon.png"> <!-- 可替換為您的圖示 URL -->
 
@@ -19,6 +20,9 @@
             height: 100%;
             overflow: hidden; /* 防止外層捲動 */
             background-color: #F8FAFC;
+            /* 修正：增加安全區域設定，適配 iPhone 瀏海屏 */
+            padding-top: env(safe-area-inset-top);
+            box-sizing: border-box;
         }
         iframe {
             width: 100%;
@@ -30,8 +34,6 @@
 </head>
 <body>
     <!-- 將 src 替換為您的 Google Apps Script 部署網址 -->
-    <iframe src="https://script.google.com/macros/s/AKfycbwY3tkPOziFLKCcguMics4RUmVGWC2HVkHQKQ89G1hnzw4-k060HYzxjoNQ-pEPmvIK/exec"></iframe>
+    <iframe src="https://script.google.com/macros/s/AKfycbzZE7wNr-8xzM25i9Lg8knPPpq6kcG6zuA-paUMx9A4f7L6lamCuWrfKuKN1m_Z_XC8/exec"></iframe>
 </body>
-
 </html>
-
